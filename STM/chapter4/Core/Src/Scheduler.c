@@ -40,6 +40,7 @@ void SCH_Dispatch_Tasks(void) {
 			(task->RunMe)--;
 			if(task->Period == 0) {
 				// delete task;
+				TL_deleteID(task->TaskID);
 			}
 		}
 	}while(TL_pointNext());

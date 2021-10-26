@@ -97,7 +97,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   SCH_Add_Task(toggleLed, 500, 250);
-  SCH_Add_Task(toggleLed2, 500, 1000);
+  SCH_Add_Task(toggleLed2, 500, 0);
   while (1)
   {
 //	  HAL_GPIO_TogglePin(DEBUG_GPIO_Port, DEBUG_Pin);

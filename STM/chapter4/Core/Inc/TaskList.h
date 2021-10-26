@@ -22,6 +22,7 @@ typedef struct {
 } STask;
 
 void TL_insertFront(STask* d);
+void TL_deleteID(uint32_t id);
 STask* TL_getCurrent();
 
 uint8_t TL_pointNext();

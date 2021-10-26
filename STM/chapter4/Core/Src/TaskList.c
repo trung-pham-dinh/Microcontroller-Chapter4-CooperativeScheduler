@@ -36,17 +36,31 @@ void TL_insertFront(STask* d) {
 }
 
 void TL_deleteID(uint32_t id) {
-	struct Node* temp = head;
-	struct Node* pretemp = NULL;
-	while(1) {
-		if(temp == NULL) return;
-		if(temp->data->TaskID == id) break;
-
-		pretemp = temp;
-		temp = temp->next;
+	struct Node* i = head->next;
+	struct Node* prei = head;
+	while(i != NULL && i->data->TaskID != id) {
+		prei = i;
+		i = i->next;
 	}
 
+	if(i == NULL) return;
 
+	if(i == tail) {
+		tail = prei;
+	}
+	if(i == curr) {
+		curr = prei;
+	}
+
+	prei->next = i->next;
+
+	if(i->data) {
+		free(i->data);
+	}
+	free(i);
+
+
+	taskCount--;
 }
 
 STask* TL_getCurrent() {
@@ -59,7 +73,7 @@ STask* TL_getCurrent() {
 
 
 uint8_t TL_pointNext() {
-	if(curr != tail) {
+	if(curr && curr != tail) {
 		curr = curr->next;
 		return 1;
 	}

@@ -1,8 +1,8 @@
 TaskList.c:21:6:TL_init	8	static
 TaskList.c:27:6:TL_insertFront	24	static
 TaskList.c:38:6:TL_deleteID	24	static
-TaskList.c:52:8:TL_getCurrent	4	static
-TaskList.c:61:9:TL_pointNext	4	static
-TaskList.c:69:6:TL_pointStart	4	static
-TaskList.c:73:6:TL_pointMark	4	static
-TaskList.c:76:6:TL_restoreMark	4	static
+TaskList.c:66:8:TL_getCurrent	4	static
+TaskList.c:75:9:TL_pointNext	4	static
+TaskList.c:83:6:TL_pointStart	4	static
+TaskList.c:87:6:TL_pointMark	4	static
+TaskList.c:90:6:TL_restoreMark	4	static
