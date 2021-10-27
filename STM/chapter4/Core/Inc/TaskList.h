@@ -22,13 +22,14 @@ typedef struct {
 } STask;
 
 void TL_insertFront(STask* d);
-void TL_deleteID(uint32_t id);
-STask* TL_getCurrent();
+uint8_t TL_deleteID(uint32_t id);
+STask* TL_getCurrent(void);
 
-uint8_t TL_pointNext();
-void TL_pointStart();
-void TL_pointMark();
-void TL_restoreMark();
+uint8_t TL_pointNext(void);
+void TL_pointStart(void);
+void TL_pointMark(void);
+void TL_restoreMark(void);
+uint32_t TL_size(void);
 
 
 #endif /* INC_TASKLIST_H_ */

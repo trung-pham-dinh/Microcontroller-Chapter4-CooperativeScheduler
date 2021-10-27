@@ -6,10 +6,13 @@
  */
 #include "Scheduler.h"
 
+#define MAX_TASK	5
+
 static uint32_t hashID = 0;
 
-uint32_t INTERRUPT_PERIOD = 0;
-const uint32_t SYS_CLK_FREQ = 8000;
+static uint32_t INTERRUPT_PERIOD = 0;
+static const uint32_t SYS_CLK_FREQ = 8000;
+
 
 void SCH_Init(TIM_HandleTypeDef *htim) {
 	INTERRUPT_PERIOD = (htim->Instance->PSC+1)*(htim->Instance->ARR+1) / SYS_CLK_FREQ;
@@ -17,6 +20,10 @@ void SCH_Init(TIM_HandleTypeDef *htim) {
 }
 
 uint32_t SCH_Add_Task(void(*pFunc)(), unsigned int DELAY, unsigned int PERIOD) {
+	if(TL_size() == MAX_TASK) {
+		return 0;
+	}
+
 	STask* task = (STask*)malloc(sizeof(STask));
 	task->pTask = pFunc;
 	task->Delay = DELAY;
@@ -27,7 +34,7 @@ uint32_t SCH_Add_Task(void(*pFunc)(), unsigned int DELAY, unsigned int PERIOD) {
 	TL_insertFront(task);
 
 	hashID++;
-	return hashID-1;
+	return hashID; // hashID start from 1, 0 for error
 }
 
 void SCH_Dispatch_Tasks(void) {
@@ -40,10 +47,12 @@ void SCH_Dispatch_Tasks(void) {
 			(task->RunMe)--;
 			if(task->Period == 0) {
 				// delete task;
-				TL_deleteID(task->TaskID);
+				SCH_Delete_Task(task->TaskID);
 			}
 		}
 	}while(TL_pointNext());
+
+	SCH_Go_To_Sleep();
 }
 
 void SCH_Update(void) {
@@ -65,5 +74,17 @@ void SCH_Update(void) {
 	}while(TL_pointNext());
 
 	TL_restoreMark();
+}
+
+unsigned char SCH_Delete_Task(const uint32_t TASK_INDEX) {
+	if(TL_deleteID(TASK_INDEX)) {
+		return 1;
+	}
+	return 0;
+}
+
+void SCH_Go_To_Sleep(void) {
+	HAL_SuspendTick(); // stop the systick interrupt
+	HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
 }
 

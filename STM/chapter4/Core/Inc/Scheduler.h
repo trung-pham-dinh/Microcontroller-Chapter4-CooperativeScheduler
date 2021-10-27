@@ -12,9 +12,16 @@
 #include <stdlib.h>
 #include "TaskList.h"
 
+typedef enum {
+	ERROR_SCH_TOO_MANY_TASKS,
+	ERROR_SCH_CANNOT_DELETE_TASK,
+} SCH_ERROR;
+
 void SCH_Init(TIM_HandleTypeDef *htim);
 uint32_t SCH_Add_Task(void(*pFunc)(), unsigned int DELAY, unsigned int PERIOD);
+unsigned char SCH_Delete_Task(const uint32_t TASK_INDEX);
 void SCH_Dispatch_Tasks(void);
 void SCH_Update(void);
+void SCH_Go_To_Sleep(void);
 
 #endif /* INC_SCHEDULER_H_ */

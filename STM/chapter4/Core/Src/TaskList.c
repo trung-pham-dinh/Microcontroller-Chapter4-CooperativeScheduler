@@ -15,13 +15,18 @@ static uint32_t taskCount = 0;
 
 static struct Node* head = NULL;
 static struct Node* curr = NULL;
-static struct Node* preCurr = NULL;
+static struct Node* preCurr = NULL; // for marking the previous curr pointer
 static struct Node* tail = NULL;
 
 void TL_init() {
-	head = (struct Node*)malloc(sizeof(struct Node));
+	head = (struct Node*)malloc(sizeof(struct Node)); // create a virtual node
 	head->data = NULL;
 	head->next = NULL;
+
+	taskCount = 0;
+	curr = NULL;
+	preCurr = NULL;
+	tail = NULL;
 }
 
 void TL_insertFront(STask* d) {
@@ -30,12 +35,15 @@ void TL_insertFront(STask* d) {
 	temp->next = head->next;
 
 	head->next = temp;
-	curr = head->next;
+
 	taskCount++;
-	if(taskCount == 1) tail = head->next;
+	if(taskCount == 1) {
+		tail = head->next;
+		curr = head->next;
+	}
 }
 
-void TL_deleteID(uint32_t id) {
+uint8_t TL_deleteID(uint32_t id) {
 	struct Node* i = head->next;
 	struct Node* prei = head;
 	while(i != NULL && i->data->TaskID != id) {
@@ -43,7 +51,7 @@ void TL_deleteID(uint32_t id) {
 		i = i->next;
 	}
 
-	if(i == NULL) return;
+	if(i == NULL) return 0; // id not found
 
 	if(i == tail) {
 		tail = prei;
@@ -61,6 +69,8 @@ void TL_deleteID(uint32_t id) {
 
 
 	taskCount--;
+
+	return 1;
 }
 
 STask* TL_getCurrent() {
@@ -89,5 +99,9 @@ void TL_pointMark() {
 }
 void TL_restoreMark() {
 	curr = preCurr;
+}
+
+uint32_t TL_size(void) {
+	return taskCount;
 }
 
