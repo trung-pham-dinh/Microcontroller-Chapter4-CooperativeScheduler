@@ -11,9 +11,6 @@
 #include "main.h"
 #include <stdlib.h>
 
-#define SCH_MAX_TASK	40;
-
-
 typedef struct {
 	void(*pTask)(void);
 	uint32_t Delay;
@@ -22,19 +19,10 @@ typedef struct {
 	uint32_t TaskID;
 } STask;
 
-
-void TL_init();
-void TL_insertFront(STask* d);
-void TL_insertOrder(STask* t);
-uint8_t TL_deleteID(uint32_t id);
-STask* TL_deleteFront();
-STask* TL_getCurrent(void);
-
-uint8_t TL_pointNext(void);
-void TL_pointStart(void);
-void TL_pointMark(void);
-void TL_restoreMark(void);
-uint32_t TL_size(void);
+void TL_init(void);
+void TL_insert(STask*t);
+STask* TL_removeFront(void);
+STask* TL_getFront();
 
 
 #endif /* INC_TASKLIST_H_ */
