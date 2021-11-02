@@ -11,6 +11,7 @@ struct Node {
 	struct Node* next;
 };
 
+
 static uint32_t taskCount = 0;
 
 static struct Node* head = NULL;
@@ -43,6 +44,58 @@ void TL_insertFront(STask* d) {
 	}
 }
 
+void TL_insertOrder(STask* t) {
+//	if(taskCount == 0) {
+//		TL_insertFront(d);
+//		return;
+//	}
+//
+//	struct Node* pretemp = head;
+//	struct Node* temp = head->next; // virtual node
+//
+//	uint32_t accumDelay = 0; // accumulate delay till the pretemp node
+//	while(temp && (accumDelay + temp->data->Delay) <= d->Delay) {
+//		accumDelay += temp->data->Delay;
+//
+//		pretemp = temp;
+//		temp = temp->next;
+//	}
+//
+//	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+//	newNode->data = d;
+//	newNode->data->Delay -= accumDelay;
+//	temp->data->Delay -= newNode->data->Delay;
+//	newNode->next = temp;
+//
+//
+//
+//	pretemp->next = newNode;
+//
+//	taskCount++;
+	struct Node* preTemp = head;
+	struct Node* temp = head->next;
+
+	uint32_t accumDelay = 0;
+	while(temp && (accumDelay + temp->data->Delay) <= t->Delay) {
+		accumDelay += temp->data->Delay;
+
+		preTemp = temp;
+		temp = temp->next;
+	}
+
+	struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
+	preTemp->next = newNode;
+	newNode->next = temp;
+
+	newNode->data = t;
+	newNode->data->Delay -= accumDelay;
+	if(temp) {
+		temp->data->Delay -= newNode->data->Delay;
+	}
+
+	taskCount++;
+}
+
 uint8_t TL_deleteID(uint32_t id) {
 	struct Node* i = head->next;
 	struct Node* prei = head;
@@ -71,6 +124,16 @@ uint8_t TL_deleteID(uint32_t id) {
 	taskCount--;
 
 	return 1;
+}
+
+STask* TL_deleteFront() {
+	if(head->next == NULL) return NULL;
+
+	struct Node* delNode = head->next;
+	head = delNode->next;
+
+	taskCount--;
+	return delNode->data;
 }
 
 STask* TL_getCurrent() {

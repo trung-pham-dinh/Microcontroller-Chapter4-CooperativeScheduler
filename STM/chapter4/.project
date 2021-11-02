@@ -29,4 +29,16 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Core/Inc/uart_printf.h</name>
+			<type>1</type>
+			<location>D:/X_network/fhdtrung/hcmut/Bai_hoc_DH/MicrocontrolerMicroprocessor/MicrocontrollerLab/Chapter4-CooperativeScheduler/STM/chapter4/Core/Inc/uart_printf.h</location>
+		</link>
+		<link>
+			<name>Core/Src/uart_printf.c</name>
+			<type>1</type>
+			<location>D:/X_network/fhdtrung/hcmut/Bai_hoc_DH/MicrocontrolerMicroprocessor/MicrocontrollerLab/Chapter4-CooperativeScheduler/STM/chapter4/Core/Src/uart_printf.c</location>
+		</link>
+	</linkedResources>
 </projectDescription>

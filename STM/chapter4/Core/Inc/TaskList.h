@@ -13,6 +13,7 @@
 
 #define SCH_MAX_TASK	40;
 
+
 typedef struct {
 	void(*pTask)(void);
 	uint32_t Delay;
@@ -21,8 +22,12 @@ typedef struct {
 	uint32_t TaskID;
 } STask;
 
+
+void TL_init();
 void TL_insertFront(STask* d);
+void TL_insertOrder(STask* t);
 uint8_t TL_deleteID(uint32_t id);
+STask* TL_deleteFront();
 STask* TL_getCurrent(void);
 
 uint8_t TL_pointNext(void);
