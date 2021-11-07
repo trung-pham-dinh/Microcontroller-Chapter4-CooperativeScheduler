@@ -19,5 +19,7 @@ void TL_insertNode(struct Node* node);
 STask* TL_removeID(uint32_t TaskID);
 struct Node* TL_removeFront(void);
 STask* TL_getFront();
+void TL_point_start();
+STask* TL_get();
 
 #endif /* INC_TASKLIST_H_ */

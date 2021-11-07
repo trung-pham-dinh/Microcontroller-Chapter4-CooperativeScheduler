@@ -6,6 +6,7 @@
  */
 
 #include "Scheduler.h"
+#include "uart_printf.h"
 static const uint32_t SYS_CLK_FREQ = 16000;
 
 
@@ -36,10 +37,11 @@ void SCH_Dispatch_Tasks(void) {
 				(delNode->data).Delay = (delNode->data).Period;
 				TL_insertNode(delNode);
 			}
+			SCH_print();
 		}
 	}
 
-	SCH_Go_To_Sleep();
+	//SCH_Go_To_Sleep(); // break program when uart transmits
 }
 
 void SCH_Update(void) {
@@ -57,4 +59,14 @@ void SCH_Update(void) {
 void SCH_Go_To_Sleep(void) {
 	HAL_SuspendTick();
 	HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
+}
+
+void SCH_print() {
+	TL_point_start();
+	STask* task = TL_get();
+	while(task) {
+		printf("Task id %lu delay remain %lu ms\r\n", task->TaskID, task->Delay);
+		task = TL_get();
+	}
+	printf("\r\n");
 }

@@ -18,5 +18,6 @@ void SCH_Delete_Task(uint32_t TaskID);
 void SCH_Dispatch_Tasks(void);
 void SCH_Update(void);
 void SCH_Go_To_Sleep(void);
+void SCH_print();
 
 #endif /* INC_SCHEDULER_H_ */

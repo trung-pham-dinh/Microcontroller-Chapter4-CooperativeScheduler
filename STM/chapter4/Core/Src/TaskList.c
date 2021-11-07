@@ -107,3 +107,16 @@ STask* TL_getFront() {
 		return &(head->next->data);
 	return NULL;
 }
+
+
+void TL_point_start() {
+	curr = head->next;
+}
+STask* TL_get() {
+	if(curr) {
+		STask* task = &(curr->data);
+		curr = curr->next;
+		return task;
+	}
+	return NULL;
+}
