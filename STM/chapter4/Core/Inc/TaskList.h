@@ -1,7 +1,7 @@
 /*
  * TaskList.h
  *
- *  Created on: Oct 26, 2021
+ *  Created on: Nov 2, 2021
  *      Author: fhdtr
  */
 
@@ -11,18 +11,13 @@
 #include "main.h"
 #include <stdlib.h>
 
-typedef struct {
-	void(*pTask)(void);
-	uint32_t Delay;
-	uint32_t Period;
-	uint8_t RunMe;
-	uint32_t TaskID;
-} STask;
+#include"TaskAllocate.h"
 
 void TL_init(void);
-void TL_insert(STask*t);
-STask* TL_removeFront(void);
+void TL_insert(void(*pFunc)(), unsigned int DELAY, unsigned int PERIOD);
+void TL_insertNode(struct Node* node);
+STask* TL_removeID(uint32_t TaskID);
+struct Node* TL_removeFront(void);
 STask* TL_getFront();
-
 
 #endif /* INC_TASKLIST_H_ */

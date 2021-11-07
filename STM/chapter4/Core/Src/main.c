@@ -46,7 +46,7 @@ TIM_HandleTypeDef htim2;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-
+uint32_t id1,id2;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -102,8 +102,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  SCH_Add_Task(toggleLed, 500, 250);
-  SCH_Add_Task(toggleLed2, 500, 500);
+  id1 = SCH_Add_Task(toggleLed, 500, 250);
+  id2 = SCH_Add_Task(toggleLed2, 510, 500);
 
   while (1)
   {
@@ -262,7 +262,17 @@ void toggleLed2() {
 }
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	//HAL_ResumeTick(); // resume systick from sleep
-	SCH_Update();
+//	static uint32_t count = 1000;
+	if(htim->Instance == TIM2) {
+		SCH_Update();
+//		if(count) {
+//			count--;
+//			if(count == 0) {
+//				count = 1000;
+//				SCH_Delete_Task(id1);
+//			}
+//		}
+	}
 }
 /* USER CODE END 4 */
 

@@ -1,70 +1,109 @@
 /*
  * TaskList.c
  *
- *  Created on: Oct 26, 2021
+ *  Created on: Nov 2, 2021
  *      Author: fhdtr
  */
+
 #include "TaskList.h"
-
-
-struct Node {
-	STask* data;
-	struct Node* next;
-};
 
 static uint32_t taskCount = 0;
 
 static struct Node* head = NULL;
 static struct Node* curr = NULL;
-static struct Node* preCurr = NULL; // for marking the previous curr pointer
 
 void TL_init(void) {
-	head = (struct Node*)malloc(sizeof(struct Node)); // create a virtual node
-	head->data = NULL;
-	head->next = NULL;
+	TA_init();
+	head = TA_malloc(); // create a virtual node
 
 	taskCount = 0;
 	curr = NULL;
-	preCurr = NULL;
 }
 
-void TL_insert(STask* t) {
+void TL_insert(void(*pFunc)(), unsigned int DELAY, unsigned int PERIOD) {
 	struct Node* preTemp = head;
 	struct Node* temp = head->next;
 
 	uint32_t accumDelay = 0;
-	while(temp && (accumDelay + temp->data->Delay) <= t->Delay) {
-		accumDelay += temp->data->Delay;
+	while(temp && (accumDelay + (temp->data).Delay) <= DELAY) {
+		accumDelay += (temp->data).Delay;
 
 		preTemp = temp;
 		temp = temp->next;
 	}
 
-	struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
+	struct Node* newNode = TA_malloc();
 	preTemp->next = newNode;
 	newNode->next = temp;
 
-	newNode->data = t;
-	newNode->data->Delay -= accumDelay;
+
+	(newNode->data).Period = PERIOD;
+	(newNode->data).RunMe = 0;
+	(newNode->data).TaskID = (uint32_t)pFunc;
+	(newNode->data).pTask = pFunc;
+	(newNode->data).Delay = DELAY - accumDelay;
+
 	if(temp) {
-		temp->data->Delay -= newNode->data->Delay;
+		(temp->data).Delay -= (newNode->data).Delay;
 	}
 
 	taskCount++;
 }
 
-STask* TL_removeFront(void) {
+void TL_insertNode(struct Node* node) {
+	if(node == NULL) return;
+
+	struct Node* preTemp = head;
+	struct Node* temp = head->next;
+
+	uint32_t accumDelay = 0;
+	while(temp && (accumDelay + (temp->data).Delay) <= (node->data).Delay) {
+		accumDelay += (temp->data).Delay;
+
+		preTemp = temp;
+		temp = temp->next;
+	}
+
+	preTemp->next = node;
+	node->next = temp;
+
+	(node->data).Delay -= accumDelay;
+	if(temp) {
+		(temp->data).Delay -= (node->data).Delay;
+	}
+
+	taskCount++;
+}
+
+STask* TL_removeID(uint32_t TaskID) {
+	struct Node* preTemp = head;
+	struct Node* temp = head->next;
+
+	while(temp && (temp->data).TaskID != TaskID) {
+		preTemp = temp;
+		temp = temp->next;
+	}
+
+	if(temp == NULL) return NULL;
+
+	preTemp->next = temp->next;
+	taskCount--;
+
+	TA_free(temp);
+	return NULL;
+}
+struct Node* TL_removeFront(void) { // just remove node from current list in order to add it in again -> no need to free()
 	if(taskCount == 0) return NULL;
 
 	struct Node* delNode = head->next;
 	head->next = delNode->next;
 
 	taskCount--;
-	return delNode->data;
+	return delNode;
 }
 
 STask* TL_getFront() {
 	if(head)
-		return head->next->data;
+		return &(head->next->data);
 	return NULL;
 }
