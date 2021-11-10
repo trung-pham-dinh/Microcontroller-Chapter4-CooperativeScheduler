@@ -1,3 +1,6 @@
 STM/.metadata
 STM/chapter4/*
 !STM/chapter4/Core
+!STM/chapter4/.cproject
+!STM/chapter4/.project
+!STM/chapter4/*.ioc
