@@ -118,8 +118,10 @@ void SCH_print() {
 
 	TL_point_start();
 	STask* task = TL_get();
+	uint32_t accumDelay = 0;
 	while(task) {
-		printf("Task id %lu delay remain %lu ms\r\n", task->TaskID, task->Delay);
+		accumDelay += task->Delay;
+		printf("Task id %lu delay remain %lu ms\r\n", task->TaskID, accumDelay);
 		task = TL_get();
 	}
 	printf("\r\n");
