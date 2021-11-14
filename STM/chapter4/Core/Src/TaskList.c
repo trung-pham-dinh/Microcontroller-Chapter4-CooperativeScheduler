@@ -120,3 +120,6 @@ STask* TL_get() {
 	}
 	return NULL;
 }
+uint32_t TL_size() {
+	return taskCount;
+}

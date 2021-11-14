@@ -21,5 +21,6 @@ struct Node* TL_removeFront(void);
 STask* TL_getFront();
 void TL_point_start();
 STask* TL_get();
+uint32_t TL_size();
 
 #endif /* INC_TASKLIST_H_ */
